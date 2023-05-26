@@ -1,0 +1,39 @@
+<!-- templates/profile.html -->
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="column is-4 is-offset-4">
+
+
+    <div class="box">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="notification is-success">
+                {{ messages[0] }}
+            </div>
+        {% endif %}
+        {% endwith %}
+        <div class="block">
+            <form method="POST" action="/">
+
+                <button class="button is-primary is-light is-large is-fullwidth">Get Next Available</button>
+            </form>
+        </div>
+
+        {% if response != None %}
+            {% for quest in response %}
+                <div class="block">
+                    <article class="message is-info">
+                      <div class="message-body">
+                        {{ quest }}
+                      </div>
+                    </article>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

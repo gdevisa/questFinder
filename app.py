@@ -99,15 +99,12 @@ def getFirstAvailable():
             print('Response:', response.text)
 
         data = avail['data']
-        for i in data:
-            if i['numSeatsAvailable'] > 0:
-                continue
-            else:
-                data.remove(i)
 
-        for i in data:
+        updated_data = [item for item in data if item['numSeatsAvailable'] != 0]
+
+        for i in updated_data:
             i['productName'] = products[i['productId']]
-        results.extend(data)
+        results.extend(updated_data)
         #print(json.dumps(data[0], indent=4))
 
     """date1 = datetime.strptime(results[0]['startTime'], '%Y-%m-%dT%H:%M:%S%z')
@@ -122,10 +119,10 @@ def getFirstAvailable():
         if datetime.strptime(i['startTime'], '%Y-%m-%dT%H:%M:%S%z') == earlier_date:
             final.append(i)
     """
-
+    sorted_list = sorted(results, key=lambda x: datetime.strptime(x['startTime'], '%Y-%m-%dT%H:%M:%S%z'))
     response = []
 
-    for i in results:
+    for i in sorted_list:
         a = 'Name: ' + i['productName'] + ', Start Time: ' + datetime.strptime(i['startTime'], '%Y-%m-%dT%H:%M:%S%z').strftime('%m-%d %H:%M') + ', Num Seats Avail: ' + str(i['numSeatsAvailable']) + '\n'
         response.append(a)
 
